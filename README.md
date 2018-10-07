@@ -26,9 +26,20 @@ following procedure:
 
 **Detailed Description**
 
-*Festure Detection*
+*Feature Detection*
 
 In this step, we identify points of interest in the image using the Harris corner detection method. For each point in the image, consider a window of pixels around that point.  Compute the Harris matrix H for (the window around) that point, defined as
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/harriseq-structuretensor.png )
+
+here the Ixp is the is the x derivative of the image at point p, the notation is similar for the y derivative. You should use the Sobel operator to compute the x, y derivatives. The weights  should be chosen to be circularly symmetric (for rotation invariance).  
+
+H is a 2x2 matrix.  To find interest points, first compute the corner strength function as below
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/harriseq1.png)
+
+Once you've computed c for every point in the image, choose points where c is above a threshold. 
+The keypoint detction code is given in file HaarisCorner.ipynb
+
+
 
 
 
