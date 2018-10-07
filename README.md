@@ -11,7 +11,7 @@ The goal is to automatically stitch images acquired by a panning camera into a m
 2. Estimate homography between each of the remaining images and the reference
 image. 
 
-3.To estimate homography between two images, we use the
+3. To estimate homography between two images, we use the
 following procedure:
 
     (a) Detect local features in each image 
@@ -23,3 +23,13 @@ following procedure:
     (d) Robustly estimate homography using RANSAC.
 
 4. Warp each image into the reference frame and composite warped images into a single mosaic.
+
+**Detailed Description**
+
+*Festure Detection*
+
+In this step, we identify points of interest in the image using the Harris corner detection method. For each point in the image, consider a window of pixels around that point.  Compute the Harris matrix H for (the window around) that point, defined as
+
+
+
+
