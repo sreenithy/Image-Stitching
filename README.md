@@ -39,6 +39,34 @@ H is a 2x2 matrix.  To find interest points, first compute the corner strength f
 Once you've computed c for every point in the image, choose points where c is above a threshold. 
 The keypoint detction code is given in file HaarisCorner.ipynb
 
+Here the keypoints have been extracetd  for the three images and arefound in 
+corners.mat – there are 3 arrays inside this file: corners left, corners
+center and corners right for the three images.
+
+If the keypoint is not given then use the following command to extract keypoints
+
+```python 
+dst = cv2.cornerHarris(gray,blockSize,ksize,alpha)
+'''
+img - Input image, it should be grayscale and float32 type.
+blockSize - It is the size of neighbourhood considered for corner detection
+ksize - Aperture parameter of Sobel derivative used.
+k - Harris detector free parameter in the equation.
+
+'''
+
+#result is dilated for marking the corners, not important
+dst = cv2.dilate(dst,None)
+
+# Threshold for an optimal value, it may vary depending on the image.
+img[dst>0.01*dst.max()]=[0,0,255]
+```
+
+*Feature Descriptors*
+
+Now that you've identified points of interest, the next step is to come up with a descriptor for the feature centered at each interest point.  This descriptor will be the representation one would use to compare features in different images to see if they match. The 128-dimensional SIFT descriptors for each feature
+point above is given in  sift features.mat – there
+are 3 arrays inside this file: sift left, sift center and sift right. 
 
 
 
