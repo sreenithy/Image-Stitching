@@ -69,6 +69,46 @@ point above is given in  sift features.mat – there
 are 3 arrays inside this file: sift left, sift center and sift right. 
 
 
+*Feature Matching*
+
+1. Tentative Matching 
+
+As the first step, use Euclidean distance to compute pairwise distances
+between the SIFT descriptors. Then, you need to perform
+”thresholding”. For thresholding, use the approach adopted in the paper “Multi-Image
+Matching using Multi-Scale Oriented Patches” by Brown et al.[1]. 
+The results are given below
+
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/tentative1%2C2.png "Tentative Correspondence between the reference image and the left image")
+
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/tentaive2%2C3.png "Tentative Correspondence between the reference image and the right image")
+
+2. Robust Matching 
+
+Here we robustly estimate homography using RANSAC algorithm. The steps are as below
+```
+    ALGORITHM for RANSAC
+    H = eye(3,3); nBest = 0;
+    for (int i = 0; i < nIterations; i++) #Repeat for nRANSAC iterations:
+            {
+              P4 = SelectRandomSubset(P); #Choose a minimal set of feature matches.
+              Hi = ComputeHomography(P4); #Estimate the transformation implied by these matches
+              nInliers = ComputeInliers(Hi); #count the number of inliers.
+              if (nInliers > nBest)
+                  {
+                    H = Hi;                  
+                     nBest = nInliers;
+                   }
+              }
+     
+```
 
 
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/Robust1%2C2.png "Robust Correspondence between the reference image and the left image")
+
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/robust2%2C3.png "Robust Correspondence between the reference image and the right image")
+
+3. Once the the Homography is robustly estimated. We perform warping and stitch the images together into one seamless panaroma. It is important to be careful in this step since during the warping stage there might be some negative values of coordinated which might end up cropping the image when acumulated with the refernece. Hence we multiply by a translation matrix that moves the warped image to the appropirate position on the mosaic.
+
+![alt text](https://github.com/sreenithy/Image-Stitching/blob/master/misc/stitchedimages.png "Robust Correspondence between the reference image and the left image")
 
